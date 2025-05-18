@@ -1,0 +1,476 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Open+Sans:wght@400;600&display=swap');
+
+.home-container {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.hero-bg {
+  height: 93vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  color: #333333;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: #FFFFFF;
+  padding: 1.2rem;
+  opacity: 0.9;
+}
+
+.hero-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 5rem;
+  font-weight: 900;
+  margin-bottom: 1.2rem;
+  line-height: 1.1;
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.fade-text {
+  animation: fadeText 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.hero-tagline {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  color: #FFFFFF;
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+}
+
+.hero-button {
+  padding: 0.8rem 1.8rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  border-radius: 40px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-button.primary {
+  background-color: #FF9999;
+  border: none;
+  box-shadow: 0 5px 12px rgba(255, 153, 153, 0.3);
+}
+
+.hero-button.primary:hover {
+  background-color: #FF6666;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 153, 153, 0.5);
+}
+
+.hero-button.secondary {
+  background-color: transparent;
+  border: 2px solid #FF9999;
+  color: #FF9999;
+}
+
+.hero-button.secondary:hover {
+  background-color: #FF9999;
+  color: #FFFFFF;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 153, 153, 0.3);
+}
+
+.hero-button:focus {
+  outline: 2px solid #333333;
+  outline-offset: 2px;
+}
+
+.video-fallback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+  color: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.play-button {
+  background-color: #FF9999;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.96rem;
+  font-weight: 700;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.play-button:hover {
+  background-color: #FF6666;
+}
+
+.play-button:focus {
+  outline: 2px solid #333333;
+  outline-offset: 2px;
+}
+
+.error-message {
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeText {
+  0%, 25% { opacity: 1; }
+  35%, 45% { opacity: 0; }
+  55%, 100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #FF9999, transparent);
+  margin: 1.6rem 0;
+}
+
+.services-section {
+  padding: 6.4rem 3.2rem;
+  background-color: #FFFFFF;
+}
+
+.services-section h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: #333333;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2.8rem;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.service-card {
+  position: relative;
+  background-color: #FFFFFF;
+  padding: 3rem;
+  border-radius: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  background: linear-gradient(to right, #FFFFFF, #FFFFFF) padding-box, linear-gradient(to right, #FF9999, #FFFFFF) border-box;
+}
+
+.service-card:hover {
+  transform: translateY(-15px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  border: 2px solid #FF9999;
+}
+
+.service-card i {
+  font-size: 3.2rem;
+  margin-bottom: 1.6rem;
+  color: #FF9999;
+}
+
+.service-card h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: #333333;
+}
+
+.service-card p {
+  font-size: 0.96rem;
+  color: #555555;
+}
+
+.why-choose-us {
+  padding: 6.4rem 3.2rem;
+  background-color: #F9F9F9;
+}
+
+.why-choose-us h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: #333333;
+}
+
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2.8rem;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.reason-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 2.4rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 153, 153, 0.2);
+}
+
+.reason-card i {
+  font-size: 3.6rem;
+  margin-bottom: 1.6rem;
+  color: #FF9999;
+}
+
+.reason-card h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: #333333;
+}
+
+.reason-card p {
+  font-size: 0.96rem;
+  color: #555555;
+}
+
+.testimonial-section {
+  padding: 6.4rem 3.2rem;
+  background-color: #FFFFFF;
+}
+
+.testimonial-section h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: #333333;
+}
+
+.testimonial-card {
+  background: #FFFFFF;
+  padding: 2rem;
+  border-radius: 16px;
+  margin: 0 1.6rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid transparent;
+}
+
+.testimonial-card .feedback {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #555555;
+  margin-bottom: 1rem;
+}
+
+.testimonial-card .name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: #FF9999;
+}
+
+.slick-dots li button:before {
+  color: #FF9999;
+  font-size: 10px;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: #FF6666;
+  font-size: 24px;
+}
+
+@media (max-width: 768px) {
+  .slick-prev,
+  .slick-next {
+    display: none !important;
+  }
+}
+
+.footer {
+  background-color: #333333;
+  color: #FFFFFF;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.footer-heading {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #FFFFFF;
+}
+
+.footer-text {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.96rem;
+  color: #CCCCCC;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  space-y: 0.5rem;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-link {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.96rem;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: #FF9999;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.social-links a {
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  transition: color 0.2s ease;
+}
+
+.social-links a:hover,
+.social-links a:focus {
+  color: #FF9999;
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.88rem;
+  color: #999999;
+}
+
+@media (max-width: 768px) {
+  .hero-bg {
+    height: 60vh;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.2rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .hero-button {
+    font-size: 0.96rem;
+    padding: 0.8rem 1.6rem;
+  }
+
+  .services-section h2,
+  .why-choose-us h2,
+  .testimonial-section h2 {
+    font-size: 2rem;
+  }
+
+  .services-section,
+  .why-choose-us,
+  .testimonial-section {
+    padding: 4rem 1.6rem;
+  }
+
+  .service-card,
+  .reason-card,
+  .testimonial-card {
+    padding: 1.6rem;
+  }
+
+  .hero-content {
+    padding: 1.2rem;
+    width: 100%;
+  }
+
+  .hero-overlay {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+}

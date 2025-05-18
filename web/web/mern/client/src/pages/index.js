@@ -1,0 +1,10 @@
+export { default as Home } from './Home.jsx';
+export { default as About } from './About.jsx';
+export { default as Login } from './Login.jsx';
+export { default as Services } from './Services.jsx';
+export { default as Signup } from './Signup.jsx';
+export { default as Account } from './Account.jsx';
+export { default as Contact } from './Contact.jsx';
+export { default as DoctorAppointments } from './DoctorAppointment.jsx';
+export { default as UserAppointmentsPage } from './UserAppointmentsPage.jsx';
+export { default as AdminDoctors } from './AdminDoctors.jsx';
