@@ -4,7 +4,7 @@ exports.setAvailability = async (req, res) => {
   try {
     const { date, startTime, endTime, doctorId } = req.body;
 
-    // Authorization check
+    
     if (req.user.id !== doctorId || req.user.role !== 'doctor') {
       return res.status(403).json({ message: 'Unauthorized: Only doctors can set their own availability' });
     }
@@ -19,14 +19,14 @@ exports.setAvailability = async (req, res) => {
       return res.status(400).json({ message: 'Invalid date format' });
     }
 
-    // Validate time range
+    
     const start = new Date(`1970-01-01T${startTime}:00`);
     const end = new Date(`1970-01-01T${endTime}:00`);
     if (start >= end) {
       return res.status(400).json({ message: 'End time must be after start time' });
     }
 
-    // Check for overlapping availability
+    
     const existingAvailability = await Availability.findOne({
       doctorId,
       date: parsedDate,
@@ -60,7 +60,7 @@ exports.getAvailability = async (req, res) => {
   try {
     const { doctorId } = req.params;
 
-    // Authorization: Allow users, doctors, and admins to view availability
+    
     if (req.user.role !== 'admin' && req.user.role !== 'user' && req.user.id !== doctorId) {
       return res.status(403).json({ message: 'Unauthorized: Cannot view this doctor’s availability' });
     }

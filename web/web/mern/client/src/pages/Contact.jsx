@@ -31,11 +31,6 @@ const Contact = () => {
       {/* Hero Section */}
       <motion.section
         className="relative bg-gradient-to-r from-[#FF9999] to-white py-24 text-center overflow-hidden"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' opacity='0.1'%3E%3Ccircle cx='100' cy='100' r='80' fill='%23FFFFFF'/%3E%3C/svg%3E")`,
-          backgroundSize: '200px 200px',
-          backgroundAttachment: 'fixed',
-        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -91,7 +86,7 @@ const Contact = () => {
             <FontAwesomeIcon icon={faMapMarkerAlt} className="text-[#FF9999] text-4xl mb-4" />
             <h3 className="text-xl font-bold font-montserrat text-gray-800">Address</h3>
             <p className="text-gray-600 font-open-sans mt-2">
-              123 Smile Street, Dental City, DC 12345
+            26 July Mehwar Road intersection with Wahat Road, 6th October City. Egypt.
             </p>
           </motion.div>
           <motion.div
@@ -103,7 +98,7 @@ const Contact = () => {
             <FontAwesomeIcon icon={faPhone} className="text-[#FF9999] text-4xl mb-4" />
             <h3 className="text-xl font-bold font-montserrat text-gray-800">Phone</h3>
             <p className="text-gray-600 font-open-sans mt-2">
-              (555) 123-4567
+              38371113
             </p>
           </motion.div>
           <motion.div
@@ -115,14 +110,14 @@ const Contact = () => {
             <FontAwesomeIcon icon={faEnvelope} className="text-[#FF9999] text-4xl mb-4" />
             <h3 className="text-xl font-bold font-montserrat text-gray-800">Email</h3>
             <p className="text-gray-600 font-open-sans mt-2">
-              info@dentalclinic.com
+              info@Msa.edu.eg
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Contact Form Section */}
-      <section className="py-24 bg-gray-100">
+      {/* <section className="py-24 bg-gray-100">
         <motion.h2
           className="text-4xl font-extrabold font-montserrat text-gray-800 text-center mb-16"
           initial={{ opacity: 0 }}
@@ -209,7 +204,7 @@ const Contact = () => {
             </div>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <motion.footer

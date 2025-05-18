@@ -55,11 +55,6 @@ const Services = () => {
       {/* Hero Section with Parallax */}
       <motion.section
         className="relative bg-gradient-to-r from-[#FF9999] to-white py-24 text-center overflow-hidden"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' opacity='0.1'%3E%3Ccircle cx='100' cy='100' r='80' fill='%23FFFFFF'/%3E%3C/svg%3E")`,
-          backgroundSize: '200px 200px',
-          backgroundAttachment: 'fixed',
-        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}

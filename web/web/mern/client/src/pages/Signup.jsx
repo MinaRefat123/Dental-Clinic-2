@@ -143,10 +143,10 @@ function Signup() {
             )}
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 font-montserrat font-semibold mb-2" htmlFor="role">
+            {/* <label className="block text-gray-700 font-montserrat font-semibold mb-2" htmlFor="role">
               Role
-            </label>
-            <select
+            </label> */}
+            {/* <select
               name="role"
               id="role"
               value={formData.role}
@@ -155,7 +155,7 @@ function Signup() {
             >
               <option value="user">Patient</option>
               <option value="admin">Reception Admin</option>
-            </select>
+            </select> */}
           </div>
           <button
             type="submit"

@@ -64,13 +64,13 @@ exports.createAppointment = async (req, res) => {
       return res.status(400).json({ message: 'Selected user is not a doctor' });
     }
 
-    // Validate time range (9 AM to 11 PM)
+    
     const [reqHours, reqMinutes] = time.split(':').map(Number);
     if (reqHours < 9 || (reqHours === 23 && reqMinutes > 0) || reqHours > 23) {
       return res.status(400).json({ message: 'Appointments can only be booked between 9 AM and 11 PM.' });
     }
 
-    // Parse the requested date and time (start of the one-hour appointment)
+    
     const requestedDate = new Date(date);
     if (isNaN(requestedDate)) {
       return res.status(400).json({ message: 'Invalid date format' });
@@ -79,7 +79,7 @@ exports.createAppointment = async (req, res) => {
     requestedDate.setHours(reqHours, reqMinutes, 0, 0);
     const requestedStartTime = requestedDate.getTime();
 
-    // Calculate the end time (one hour later)
+    
     const requestedEndTime = requestedStartTime + 60 * 60 * 1000; // 1 hour in milliseconds
     const endHours = new Date(requestedEndTime).getHours();
     if (endHours > 23 || (endHours === 23 && new Date(requestedEndTime).getMinutes() > 0)) {
@@ -88,11 +88,11 @@ exports.createAppointment = async (req, res) => {
 
     console.log(`Requested Appointment: Start=${new Date(requestedStartTime).toISOString()}, End=${new Date(requestedEndTime).toISOString()}`);
 
-    // Extract the date part (ignoring time) for comparison
+   
     const requestedDateOnly = new Date(requestedDate);
     requestedDateOnly.setHours(0, 0, 0, 0);
 
-    // Find existing appointments for the same doctor on the same day
+    //  appointments for the same doctor on the same day
     const existingAppointments = await Appointment.find({
       doctorId,
       date: {
@@ -101,7 +101,7 @@ exports.createAppointment = async (req, res) => {
       }
     });
 
-    // Check for conflicts (overlapping one-hour slots)
+    // Check for conflicts
     for (const appt of existingAppointments) {
       const [apptHours, apptMinutes] = appt.time.split(':').map(Number);
       const apptDate = new Date(appt.date);
@@ -111,10 +111,10 @@ exports.createAppointment = async (req, res) => {
 
       console.log(`Existing Appointment: Start=${new Date(apptStartTime).toISOString()}, End=${new Date(apptEndTime).toISOString()}`);
 
-      // Check for overlap (including boundaries)
+     
       if (
-        (requestedStartTime < apptEndTime && requestedEndTime > apptStartTime) || // Overlap condition
-        (requestedStartTime === apptStartTime) // Exact match at start
+        (requestedStartTime < apptEndTime && requestedEndTime > apptStartTime) ||
+        (requestedStartTime === apptStartTime) 
       ) {
         return res.status(400).json({ message: 'Appointments must be at least one hour long and cannot overlap with existing bookings.' });
       }
@@ -148,7 +148,7 @@ exports.deleteAppointment = async (req, res) => {
       return res.status(404).json({ message: 'Appointment not found' });
     }
 
-    // Allow deletion by patient, doctor, or admin
+    
     if (req.user.role !== 'admin' && req.user.id !== appointment.patientId.toString() && !(req.user.role === 'doctor' && req.user.id === appointment.doctorId.toString())) {
       return res.status(403).json({ message: 'Unauthorized: Only the patient, doctor, or admin can delete this appointment' });
     }
