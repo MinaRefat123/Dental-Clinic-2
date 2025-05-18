@@ -79,7 +79,14 @@ const UserAppointmentsPage = () => {
       setSuccess('Appointment booked successfully!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Failed to book appointment.');
+      // Show backend error if available
+      if (err && err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else if (err && err.message) {
+        setError(err.message);
+      } else {
+        setError('Failed to book appointment.');
+      }
     } finally {
       setLoading(false);
     }

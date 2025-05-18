@@ -174,19 +174,13 @@ exports.deleteDoctor = async (req, res) => {
     }
 
     const doctorId = req.params.doctorId;
-    const user = await User.findById(doctorId);
+    const doctor = await Doctor.findById(doctorId);
 
-    if (!user) {
+    if (!doctor) {
       return res.status(404).json({ message: 'Doctor not found' });
     }
 
-    if (user.role !== 'doctor') {
-      return res.status(400).json({ message: 'User is not a doctor' });
-    }
-
-    await User.findByIdAndDelete(doctorId);
-    // Remove from doctors collection
-    await Doctor.findOneAndDelete({ userId: doctorId });
+    await Doctor.findByIdAndDelete(doctorId);
     res.json({ message: 'Doctor deleted successfully' });
   } catch (error) {
     console.error('Delete doctor error:', error);

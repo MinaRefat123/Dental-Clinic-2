@@ -48,7 +48,10 @@ export const createAppointment = async (appointmentData) => {
     return response.data;
   } catch (error) {
     console.error('Error creating appointment:', error);
-    throw { message: 'Failed to create appointment', error: error.message };
+    if (error.response && error.response.data && error.response.data.message) {
+      throw { message: error.response.data.message };
+    }
+    throw { message: error.message || 'Failed to create appointment' };
   }
 };
 

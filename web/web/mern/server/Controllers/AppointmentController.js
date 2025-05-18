@@ -54,14 +54,10 @@ exports.createAppointment = async (req, res) => {
     }
 
     const patient = await User.findById(patientId);
-    const doctor = await User.findById(doctorId);
+    const doctor = await Doctor.findById(doctorId);
 
     if (!patient || !doctor) {
       return res.status(404).json({ message: 'Patient or doctor not found' });
-    }
-
-    if (doctor.role !== 'doctor') {
-      return res.status(400).json({ message: 'Selected user is not a doctor' });
     }
 
     

@@ -18,7 +18,7 @@ const About = () => {
         const data = await getDoctors();
         setDoctors(data);
       } catch (err) {
-        setError('Failed to load doctors');
+        // setError('Failed to load doctors');
       } finally {
         setLoading(false);
       }

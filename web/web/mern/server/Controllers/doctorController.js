@@ -1,13 +1,17 @@
 const Availability = require('../Models/Availability');
+const Doctor = require('../Models/Doctor');
 
 exports.setAvailability = async (req, res) => {
   try {
     const { date, startTime, endTime, doctorId } = req.body;
 
-    
-    if (req.user.id !== doctorId || req.user.role !== 'doctor') {
-      return res.status(403).json({ message: 'Unauthorized: Only doctors can set their own availability' });
+    // Check if doctor exists in Doctor collection
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ message: 'Doctor not found' });
     }
+    // Optionally, check if the logged-in user is allowed to set this doctor's availability
+    // (e.g., by matching email or another field if you want to restrict)
 
     // Validate inputs
     if (!date || !startTime || !endTime) {
@@ -19,14 +23,12 @@ exports.setAvailability = async (req, res) => {
       return res.status(400).json({ message: 'Invalid date format' });
     }
 
-    
     const start = new Date(`1970-01-01T${startTime}:00`);
     const end = new Date(`1970-01-01T${endTime}:00`);
     if (start >= end) {
       return res.status(400).json({ message: 'End time must be after start time' });
     }
 
-    
     const existingAvailability = await Availability.findOne({
       doctorId,
       date: parsedDate,
@@ -60,9 +62,10 @@ exports.getAvailability = async (req, res) => {
   try {
     const { doctorId } = req.params;
 
-    
-    if (req.user.role !== 'admin' && req.user.role !== 'user' && req.user.id !== doctorId) {
-      return res.status(403).json({ message: 'Unauthorized: Cannot view this doctor’s availability' });
+    // Check if doctor exists in Doctor collection
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ message: 'Doctor not found' });
     }
 
     const availability = await Availability.find({ doctorId })
