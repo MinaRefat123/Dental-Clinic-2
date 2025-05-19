@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
@@ -22,29 +21,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
-=======
-  "name": "client",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "nodemon index.js",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.7.2",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "axios": "^1.6.0",
-    "framer-motion": "^12.9.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-helmet": "^6.1.0",
-    "react-router-dom": "^6.16.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.4",
-    "vite": "^4.4.9"
->>>>>>> 4f7d4b942d4e76fe7dcf05b635bd1f80f8df2892
   }
 }
