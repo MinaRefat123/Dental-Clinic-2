@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173'],
+  origin: 'https://dental-clinic-2.vercel.app',
   credentials: true,
 }));
 
