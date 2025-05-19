@@ -1,0 +1,41 @@
+.doctor-appointment-container {
+    padding: 0; /* Padding handled by sections */
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  /* Remove redundant h1 styling since it's handled in JSX */
+  h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .doctor-view, .appointment-section {
+    margin-bottom: 2rem;
+  }
+  
+  .availability-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .availability-form input {
+    margin-right: 0; /* Handled by gap */
+  }
+  
+  .doctor-list, .appointment-list, .availability-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .doctor-item, .availability-item {
+    margin-bottom: 1rem;
+  }
+  
+  /* Remove button styles since they're handled in JSX */
+  button {
+    /* No styles needed; overridden in JSX */
+  }
+  
+  button:hover {
+    /* No styles needed; overridden in JSX */
+  }
