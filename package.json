@@ -1,4 +1,28 @@
 {
+<<<<<<< HEAD
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.16.0",
+    "mongoose": "^8.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+=======
   "name": "client",
   "version": "1.0.0",
   "private": true,
@@ -21,5 +45,6 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.4",
     "vite": "^4.4.9"
+>>>>>>> 4f7d4b942d4e76fe7dcf05b635bd1f80f8df2892
   }
 }
