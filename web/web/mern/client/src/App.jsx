@@ -13,7 +13,7 @@ import Contact from './pages/Contact';
 import DoctorAppointments from './pages/DoctorAppointment';
 import UserAppointmentsPage from './pages/UserAppointmentsPage';
 import AdminDoctors from './pages/AdminDoctors';
-import ProtectedRoute from './components/ProtectedRoute'; // Import the new ProtectedRoute component
+import ProtectedRoute from './components/ProtectedRoute'; 
 import Loader from './components/Loader';
 
 function App() {
