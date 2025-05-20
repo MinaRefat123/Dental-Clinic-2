@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { login } from '../services/authService';
 import '../assets/css/styles.css';
 
 const Login = ({ setIsLoggedIn }) => {
@@ -16,14 +16,11 @@ const Login = ({ setIsLoggedIn }) => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password,
-      });
-      const token = response.data.token;
+      const { token, user } = await login(email, password);
       localStorage.setItem('token', token);
       setIsLoggedIn(true);
       console.log('Login successful, token set:', token); // Debug log
+      console.log('User info retrieved:', user); // Debug log
       navigate('/account');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');

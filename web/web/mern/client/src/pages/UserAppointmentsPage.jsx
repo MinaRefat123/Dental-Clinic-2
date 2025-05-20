@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate for r
 import { motion } from 'framer-motion';
 import { getAppointments, createAppointment, getDoctors } from '../services/appointmentService';
 import AppointmentCard from '../components/AppointmentCard';
+import AppointmentTypeSelector from '../components/AppointmentTypeSelector';
 
 const UserAppointmentsPage = () => {
   const [appointments, setAppointments] = useState([]);
@@ -40,19 +41,9 @@ const UserAppointmentsPage = () => {
           })
         ]);
         setAppointments(appointmentData);
-        // Handle the doctorData response
-        if (doctorData.doctors) {
-          // If backend returns { message, doctors }
-          setDoctors(doctorData.doctors);
-          if (doctorData.doctors.length === 0) {
-            setError('No doctors available. Please contact an admin to add doctors.');
-          }
-        } else {
-          // If backend returns an array directly
-          setDoctors(doctorData);
-          if (doctorData.length === 0) {
-            setError('No doctors available. Please contact an admin to add doctors.');
-          }
+        setDoctors(doctorData);
+        if (doctorData.length === 0) {
+          setError('No doctors available. Please contact an admin to add doctors.');
         }
       } catch (err) {
         setError(err.message.includes('Doctors fetch failed') ? 'Failed to load doctors. Please try again.' : err.message);
@@ -73,6 +64,8 @@ const UserAppointmentsPage = () => {
     setLoading(true);
     setError(null);
     try {
+      // DEBUG: Log the doctorId being submitted
+      console.log('[Booking] Submitting appointment with doctorId:', formData.doctorId);
       const newAppointment = await createAppointment(formData);
       setAppointments([...appointments, newAppointment]);
       setFormData({ title: '', date: '', time: '', description: '', doctorId: '' });
@@ -91,6 +84,7 @@ const UserAppointmentsPage = () => {
       setLoading(false);
     }
   };
+
 
   const handleDelete = (appointmentId) => {
     setAppointments(appointments.filter((appt) => appt._id !== appointmentId));
@@ -160,20 +154,10 @@ const UserAppointmentsPage = () => {
         >
           <h2 className="text-3xl font-bold font-montserrat text-gray-800 mb-6">Schedule an Appointment</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="title" className="block font-montserrat text-gray-600 font-semibold mb-2">
-                Appointment Type
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                placeholder="e.g., Cleaning, Checkup"
-                className="w-full p-3 border border-gray-300 rounded-lg font-open-sans focus:outline-none focus:ring-2 focus:ring-[#FF9999]"
-                required
-                aria-required="true"
+            <div className="md:col-span-2">
+              <AppointmentTypeSelector
+                onSelect={(selectedType) => setFormData({ ...formData, title: selectedType, appointmentType: selectedType })}
+                selectedType={formData.title}
               />
             </div>
             <div>
@@ -189,9 +173,11 @@ const UserAppointmentsPage = () => {
                 required
                 aria-required="true"
               >
-                <option value="">Select a doctor</option>
+                <option value="">Select Doctor</option>
                 {doctors.map((doctor) => (
-                  <option key={doctor._id} value={doctor._id}>{doctor.name}</option>
+                  <option key={doctor._id} value={doctor._id}>
+                    {doctor.name} - {doctor.specialty}
+                  </option>
                 ))}
               </select>
             </div>

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const Doctor = require('../Models/Doctor');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const authHeader = req.header('Authorization');
   console.log('Authorization header:', authHeader ? 'Present' : 'Missing');
 
@@ -31,16 +32,48 @@ module.exports = (req, res, next) => {
       return res.status(401).json({ message: 'Invalid token payload' });
     }
 
-    req.user = decoded.user;
+    // Set base user properties from the token
+    req.user = {
+      id: decoded.user.id,
+      role: decoded.user.role,
+      email: decoded.user.email,
+      name: decoded.user.name,
+    };
+
+    // If this is a doctor token, add the doctorId property directly
+    // This helps the frontend and APIs know this is a standalone doctor
+    if (decoded.user.role === 'doctor') {
+      // Check if this is a direct doctor account (not via User)
+      if (decoded.user.isDirectDoctor) {
+        console.log('Processing token for standalone doctor account');
+        req.user.doctorId = decoded.user.id; // For standalone doctors, id == doctorId
+        req.user.isDirectDoctor = true;
+      } else {
+        // Find the doctor record to get the proper doctorId
+        try {
+          // For backward compatibility, check by name and email if the doctor exists
+          const doctor = await Doctor.findOne({ 
+            $or: [
+              { _id: decoded.user.id },  // Direct match (new system)
+              { email: decoded.user.email } // Indirect match (old system)
+            ]
+          });
+          
+          if (doctor) {
+            req.user.doctorId = doctor._id;
+            console.log('Found doctor record, doctorId:', doctor._id);
+          } else {
+            console.log('No doctor record found for this token');
+          }
+        } catch (err) {
+          console.error('Error finding doctor record:', err);
+        }
+      }
+    }
+
     next();
-  } catch (err) {
-    console.error('Token validation error:', err.message);
-    if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Token has expired' });
-    }
-    if (err.name === 'JsonWebTokenError') {
-      return res.status(401).json({ message: 'Invalid token' });
-    }
-    res.status(401).json({ message: 'Token validation failed' });
+  } catch (error) {
+    console.error('JWT verification error:', error.message);
+    return res.status(401).json({ message: 'Token is not valid', error: error.message });
   }
 };

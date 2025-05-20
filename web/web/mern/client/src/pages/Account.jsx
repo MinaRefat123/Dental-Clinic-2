@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import ProfileUpdateForm from '../components/ProfileUpdateForm';
+import DentalHistoryView from '../components/DentalHistoryView';
 import { getAppointments, getDoctorAppointments, getAllAppointments, getDoctors } from '../services/appointmentService';
+import { getDoctorByUserId } from '../services/doctorService';
+import DoctorSchedule from '../components/DoctorSchedule';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { FaUser } from 'react-icons/fa';
@@ -13,6 +17,7 @@ const Account = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [userData, setUserData] = useState({ name: '', email: '', specialty: '' });
   const [appointments, setAppointments] = useState([]);
+  const [doctorId, setDoctorId] = useState(localStorage.getItem('doctorId') || '');
   const [doctors, setDoctors] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -44,46 +49,51 @@ const Account = () => {
           return;
         }
 
-        const profileResponse = await axios.get('http://localhost:5000/api/auth/profile', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        try {
+          const profileResponse = await axios.get('http://localhost:5000/api/auth/profile', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
 
-        const { name, email, specialty, _id, role } = profileResponse.data;
-        setUserData({ name, email, specialty: specialty || '' });
-        setUserRole(role);
-        setUserId(_id);
-        localStorage.setItem('role', role);
-        localStorage.setItem('userId', _id);
+          const { name, email, specialty, _id, role } = profileResponse.data;
+          setUserData({ name, email, specialty: specialty || '' });
+          setUserRole(role);
+          setUserId(_id);
+          localStorage.setItem('role', role);
+          localStorage.setItem('userId', _id);
 
-        let appointmentData = [];
-        if (role === 'user') {
-          appointmentData = await getAppointments();
-        } else if (role === 'doctor') {
-          appointmentData = await getDoctorAppointments(_id);
-        } else if (role === 'admin') {
-          appointmentData = await getAllAppointments();
-          const doctorData = await getDoctors();
-          setDoctors(doctorData);
+          let appointmentData = [];
+          if (role === 'doctor') {
+            // Fetch doctorId from doctorService if not in localStorage
+            let docId = localStorage.getItem('doctorId');
+            if (!docId) {
+              const doctor = await getDoctorByUserId(_id);
+              docId = doctor._id;
+              localStorage.setItem('doctorId', docId);
+            }
+            setDoctorId(docId);
+            appointmentData = await getDoctorAppointments(docId);
+          } else if (role === 'user') {
+            appointmentData = await getAppointments();
+          } else if (role === 'admin') {
+            appointmentData = await getAllAppointments();
+            const doctorData = await getDoctors();
+            setDoctors(doctorData);
+          }
+          setAppointments(appointmentData);
+          setError(null);
+        } catch (err) {
+          setError('Failed to load data.');
+        } finally {
+          setLoading(false);
         }
-        setAppointments(appointmentData);
-        setError(null);
       } catch (err) {
-        console.error('Error in fetchInitialData:', err);
-        // Only redirect to login if the error is due to auth (401) or token issues
-        if (err.response?.status === 401 || err.response?.status === 403) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('role');
-          localStorage.removeItem('userId');
-          navigate('/login', { replace: true });
-        } else {
-          setError('Failed to load data. Please try again.');
-        }
+        setError('Failed to load data.');
       } finally {
         setLoading(false);
       }
     };
     checkTokenAndFetchData();
-  }, [navigate]);
+  }, [navigate, userRole]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -148,6 +158,17 @@ const Account = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'dental-history':
+        return (
+          <motion.div
+            className="bg-white shadow-lg rounded-xl p-8 border border-gray-200"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <DentalHistoryView userRole={userRole} />
+          </motion.div>
+        );
       case 'profile':
         return (
           <motion.div
@@ -156,61 +177,33 @@ const Account = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold font-montserrat text-gray-800 mb-6">Edit Profile</h2>
-            <form onSubmit={handleProfileUpdate} className="grid grid-cols-1 gap-6">
-              <div>
-                <label htmlFor="name" className="block font-montserrat text-gray-700 font-semibold mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={userData.name}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border border-gray-300 rounded-lg font-open-sans focus:outline-none focus:ring-2 focus:ring-[#FF9999] transition-all"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block font-montserrat text-gray-700 font-semibold mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={userData.email}
-                  onChange={handleInputChange}
-                  className="w-full p-3 border border-gray-300 rounded-lg font-open-sans focus:outline-none focus:ring-2 focus:ring-[#FF9999] transition-all"
-                  required
-                />
-              </div>
-              {userRole === 'doctor' && (
-                <div>
-                  <label htmlFor="specialty" className="block font-montserrat text-gray-700 font-semibold mb-2">
-                    Specialty
-                  </label>
-                  <input
-                    type="text"
-                    id="specialty"
-                    name="specialty"
-                    value={userData.specialty}
-                    onChange={handleInputChange}
-                    className="w-full p-3 border border-gray-300 rounded-lg font-open-sans focus:outline-none focus:ring-2 focus:ring-[#FF9999] transition-all"
-                  />
-                </div>
-              )}
-              <motion.button
-                type="submit"
-                className="bg-[#FF9999] text-white font-montserrat font-bold py-3 px-6 rounded-lg hover:bg-pink-600 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                disabled={loading}
+            <ProfileUpdateForm
+              onProfileUpdate={(updatedData) => {
+                setUserData(updatedData);
+                setSuccess('Profile updated successfully!');
+                setTimeout(() => setSuccess(''), 3000);
+              }}
+            />
+            {success && (
+              <motion.div
+                className="mt-4 p-3 bg-green-100 text-green-700 rounded-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
               >
-                {loading ? 'Updating...' : 'Update Profile'}
-              </motion.button>
-            </form>
+                {success}
+              </motion.div>
+            )}
+            {error && (
+              <motion.div
+                className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                {error}
+              </motion.div>
+            )}
           </motion.div>
         );
       case 'appointments':
@@ -232,7 +225,9 @@ const Account = () => {
                 Book Appointment
               </Link>
             )}
-            {loading ? (
+            {userRole === 'doctor' ? (
+              <DoctorSchedule doctorId={doctorId} />
+            ) : loading ? (
               <p className="text-center text-gray-600 font-open-sans">Loading...</p>
             ) : appointments.length === 0 ? (
               <p className="text-center text-gray-600 font-open-sans">No appointments found.</p>

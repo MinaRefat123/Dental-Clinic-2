@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://dental-clinic-2-f8gb.vercel.app/',
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true,
 }));
 
@@ -72,11 +72,12 @@ mongoose.disconnect().then(() => {
 });
 
 // Routes
-let authRouter, appointmentRouter, doctorRouter;
+let authRouter, appointmentRouter, doctorRouter, dentalHistoryRouter;
 try {
   authRouter = require('./Routers/authRouter');
   appointmentRouter = require('./Routers/appointmentRouter');
   doctorRouter = require('./Routers/doctorRouter');
+  dentalHistoryRouter = require('./Routers/dentalHistoryRouter');
   console.log('Loaded routers from ./Routers/');
 } catch (e) {
   console.error('Error: Cannot find routers in ./Routers/. Exiting...', e);
@@ -86,6 +87,7 @@ try {
 app.use('/api/auth', authRouter);
 app.use('/api/appointment', appointmentRouter);
 app.use('/api/doctor', doctorRouter);
+app.use('/api/dental-history', dentalHistoryRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

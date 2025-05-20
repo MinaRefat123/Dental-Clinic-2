@@ -29,11 +29,20 @@ function App() {
     setIsLoggedIn(!!token);
     if (token) {
       try {
+        // Properly decode JWT token
         const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('Decoded token payload:', payload); // Debug log
+        
+        // Extract role from user object in payload
         const roleFromToken = payload.user?.role;
+        console.log('Role extracted from token:', roleFromToken); // Debug log
+        
         if (roleFromToken) {
           localStorage.setItem('role', roleFromToken);
           setUserRole(roleFromToken);
+          console.log('Role set in localStorage:', roleFromToken); // Debug log
+        } else {
+          console.error('Role not found in token payload');
         }
       } catch (error) {
         console.error('Error decoding token:', error);
